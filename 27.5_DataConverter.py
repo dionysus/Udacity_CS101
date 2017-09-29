@@ -24,8 +24,8 @@ swedish = {1:"januari", 2:"februari", 3:"mars", 4:"april", 5:"maj",
 
 def date_converter(calendar, date):
 
-	date = date.split('/')
-	return str(date[1]) + ' ' + str(calendar[int(date[0])]) + ' ' + str(date[2])
+	month, day, year = date.split('/') # triple assignment
+	return month + ' ' + str(calendar[int(month)]) + ' ' + year
 
 print date_converter(english, '5/11/2012')
 #>>> 11 May 2012
