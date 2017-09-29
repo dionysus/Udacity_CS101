@@ -22,22 +22,7 @@ def remove_tags(text):
 
 		text = text[:a] + ' ' + text[b+1:]
 
-	while len(text) > 0:
-
-		if text[0] == ' ':
-			if len(currentword) > 0:
-				textlist.append(currentword)
-				currentword = ''
-		else:
-			currentword += text[0]
-		
-		if len(text) == 1 and len(currentword) > 0:
-			textlist.append(currentword)
-			break
-		
-		text = text[1:]
-
-	return textlist
+	return text.split()
 
 
 	
