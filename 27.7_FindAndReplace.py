@@ -15,11 +15,22 @@
 
 def make_converter(match, replacement):
 
-
+	return [match, replacement]
 
 def apply_converter(converter, string):
 
+	#if match in string:
+	#	replace match with replacement
+	#^^repeat^^
 
+	match, replacement = converter
+
+	if match in string:
+
+		string = string[:string.find(match)] + replacement + string[string.find(match)+len(match):]
+		return apply_converter(converter, string)
+
+	return string
 
 # For example,
 
@@ -34,3 +45,21 @@ print apply_converter(c, 'aaaaaabaaaaa')
 # Note that this process is not guaranteed to terminate for all inputs
 # (for example, apply_converter(make_converter('a', 'aa'), 'a') would 
 # run forever).
+
+#print apply_converter(make_converter('aa', 'a'), 'aaaa')
+# >>> a
+
+#print apply_converter(make_converter('aba', 'b'), 'aaaaaabaaaaa')
+# >>> ab
+
+#aaaaa aba aaaa
+#aaaaa b aaaa
+#aaaa aba aaa
+#aaaa b aaa
+#aaa aba aa
+#aaa b aa
+#aa aba a
+#aa b a
+#a aba
+#a b
+
