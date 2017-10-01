@@ -22,11 +22,9 @@ def deep_reverse(list):
 	if is_list(list):
 
 		newlist = []
-		i = 0
 
-		while i < len(list):
+		for i in range(0, len(list)):
 			newlist.append(deep_reverse(list[-(1+i)]))
-			i += 1
 		
 		list = newlist
 
