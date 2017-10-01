@@ -19,23 +19,18 @@ def deep_reverse(list):
 	# for each element, if list:
 	# reverse that list.
 
-	newlist = []
-	i = 0
+	if is_list(list):
 
-	while i < len(list):
-		newlist.append(list[-(1+i)])
-		i += 1
-	
-	list = newlist
-	
-	for i in range(0, len(list)):
-		if is_list(list[i]):
-			list[i] = deep_reverse(list[i])
+		newlist = []
+		i = 0
+
+		while i < len(list):
+			newlist.append(deep_reverse(list[-(1+i)]))
+			i += 1
+		
+		list = newlist
 
 	return list
-
-
-
 
 #For example,
 
