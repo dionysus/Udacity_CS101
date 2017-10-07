@@ -25,19 +25,20 @@
 #     helping the page rank.
 
 
-def kvalue (graph, page, link):
+def is_recursive (graph, page, testlinks, k):
 
-	if page == link:
-		return 0
+	if k < 0:
+		return False
+	if page in testlinks:
+		return True
 
-	else:
-		testlist = []
-		for i in graph[link]:
-			testlist.append(i)
-		if page in testlist:
-			return 1 
-		else: 
-			return 1 + kvalue (graph, page, i)
+	newlinks = []
+	for i in testlinks:
+		for n in graph[i]:
+			if n not in newlinks:
+				newlinks.append(n)
+
+	return is_recursive(graph, page, newlinks, k-1)
 
 
 def compute_ranks(graph, k):
@@ -57,7 +58,7 @@ def compute_ranks(graph, k):
 
 			for node in graph:
 
-				if page in graph[node] and kvalue(graph, node, page) > k:
+				if page in graph[node] and not is_recursive (graph, node, [page], k):
 
 					newrank = newrank + d * (ranks[node]/len(graph[node]))
 
@@ -68,9 +69,9 @@ def compute_ranks(graph, k):
 # For example
 
 #g = {'a': ['a', 'b', 'c'], 'b':['a'], 'c':['d'], 'd':['a']}
-g = {'a': ['a', 'b', 'c'], 'c': ['d'], 'b': ['e', 'g'], 'e': ['f'], 'd': ['f', 'g'], 'g': ['a'], 'f': ['a']}
+g = {'a': ['a', 'b', 'c'], 'c': ['d'], 'b': ['a'], 'd': ['a']}
 
-print compute_ranks(g, 0) # the a->a link is reciprocal
+print compute_ranks(g, 1) # the a->a link is reciprocal
 #>>> {'a': 0.26676872354238684, 'c': 0.1216391112164609,
 #     'b': 0.1216391112164609, 'd': 0.1476647842238683}
 
