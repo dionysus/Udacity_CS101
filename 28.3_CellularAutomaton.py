@@ -93,16 +93,7 @@ def cellular_automaton(seed, num, gens):
 
 		for i in range(0, len(previousrow)):
 			
-			if len(previousrow) == 1:
-				test = 3 * previousrow[0]
-			elif i == 0:
-				test = previousrow[-1] + str(previousrow[0:2])
-
-			elif i == len(previousrow)-1:
-				test = previousrow[i-1:] + previousrow[0]
-			
-			else:
-				test = previousrow[i-1:i+2]
+			test = previousrow[i-1] + previousrow[i] + previousrow[(i+1)%len(previousrow)]
 
 				# length of 1
 				# [-1][0][0]
