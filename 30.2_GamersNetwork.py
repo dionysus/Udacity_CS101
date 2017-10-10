@@ -205,6 +205,13 @@ def add_connection(network, user_A, user_B):
 #   - If the user already exists in network, return network *UNCHANGED* (do not change
 #     the user's game preferences)
 def add_new_user(network, user, games):
+
+	if user not in network:
+
+		network[user] = {}
+		network[user]['connections'] = []
+		network[user]['likes'] = games
+
 	return network
 		
 # ----------------------------------------------------------------------------- 
@@ -298,8 +305,8 @@ print get_connections(net, "John")
 print add_connection(net, "John", "Test")
 print get_connections(net, "John")
 
-#print add_new_user(net, "Debra", []) 
-#print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
+print add_new_user(net, "Debra", []) 
+print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
 #print get_secondary_connections(net, "Mercedes")
 #print count_common_connections(net, "Mercedes", "John")
 #print find_path_to_friend(net, "John", "Ollie")
