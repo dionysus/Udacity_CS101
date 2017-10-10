@@ -98,6 +98,7 @@ Freda likes to play Starfleet Commander, Ninja Hamsters, Seahorse Adventures."
 def create_data_structure(string_input):
 
 	sentences = string_input.split('.')
+
 	connections = []
 	likes= []
 
@@ -111,14 +112,16 @@ def create_data_structure(string_input):
 
 	for i in range (0, len(connections)):
 		network[connections[i][0]] = {}
-		network[connections[i][0]]['connections'] = connections[i][1].split(', ')
+		network[connections[i][0]]['connections'] = []
+		network[connections[i][0]]['connections'] += connections[i][1].split(', ')
 
 	for i in range (0, len(likes)):
-		network[connections[i][0]]['likes'] = likes[i][1].split(', ')
+		network[connections[i][0]]['likes'] = []
+		network[connections[i][0]]['likes'] += likes[i][1].split(', ')
 
 	return network
 
-print create_data_structure(example_input)
+#print create_data_structure(example_input)
 
 # ----------------------------------------------------------------------------- # 
 # Note that the first argument to all procedures below is 'network' This is the #
@@ -139,8 +142,11 @@ print create_data_structure(example_input)
 #   A list of all connections the user has.
 #   - If the user has no connections, return an empty list.
 #   - If the user is not in network, return None.
+
 def get_connections(network, user):
-	return []
+
+	return network[user]['connections']
+
 
 # ----------------------------------------------------------------------------- 
 # get_games_liked(network, user): 
@@ -155,7 +161,7 @@ def get_connections(network, user):
 #   - If the user likes no games, return an empty list.
 #   - If the user is not in network, return None.
 def get_games_liked(network,user):
-	return []
+	return network[user]['likes']
 
 # ----------------------------------------------------------------------------- 
 # add_connection(network, user_A, user_B): 
@@ -276,11 +282,11 @@ def find_path_to_friend(network, user_A, user_B):
 # Replace this with your own procedure! You can also uncomment the lines below
 # to see how your code behaves. Have fun!
 
-#net = create_data_structure(example_input)
+net = create_data_structure(example_input)
 #print net
-#print get_connections(net, "Debra")
-#print get_connections(net, "Mercedes")
-#print get_games_liked(net, "John")
+print get_connections(net, "Debra")
+print get_connections(net, "Mercedes")
+print get_games_liked(net, "John")
 #print add_connection(net, "John", "Freda")
 #print add_new_user(net, "Debra", []) 
 #print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
