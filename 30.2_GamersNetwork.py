@@ -232,8 +232,19 @@ def add_new_user(network, user, games):
 #   It is OK if a user's list of secondary connections includes the user 
 #   himself/herself. It is also OK if the list contains a user's primary 
 #   connection that is a secondary connection as well.
+
 def get_secondary_connections(network, user):
-	return []
+
+	connections = get_connections(network, user)
+	secondaryconnections = []
+
+	for i in connections:
+		print str(i) + ': ' + str(get_connections(network, i))
+		for friends in get_connections(network, i):
+			if friends not in secondaryconnections:
+				secondaryconnections.append(friends)
+
+	return secondaryconnections
 
 # ----------------------------------------------------------------------------- 	
 # count_common_connections(network, user_A, user_B): 
@@ -301,12 +312,15 @@ net = create_data_structure(example_input)
 print get_connections(net, "Debra")
 print get_connections(net, "Mercedes")
 print get_games_liked(net, "John")
+
 print get_connections(net, "John")
 print add_connection(net, "John", "Test")
 print get_connections(net, "John")
 
 print add_new_user(net, "Debra", []) 
 print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
-#print get_secondary_connections(net, "Mercedes")
+
+print get_connections(net, "Mercedes")
+print get_secondary_connections(net, "Mercedes")
 #print count_common_connections(net, "Mercedes", "John")
 #print find_path_to_friend(net, "John", "Ollie")
