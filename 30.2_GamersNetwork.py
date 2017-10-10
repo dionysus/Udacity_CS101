@@ -178,6 +178,13 @@ def get_games_liked(network,user):
 #   - If a connection already exists from user_A to user_B, return network unchanged.
 #   - If user_A or user_B is not in network, return False.
 def add_connection(network, user_A, user_B):
+
+	if user_A not in network or user_B not in network:
+		return False
+
+	if user_B not in get_connections(network, user_A):
+		network[user_A]['connections'].append(user_B)
+
 	return network
 
 # ----------------------------------------------------------------------------- 
@@ -287,7 +294,10 @@ net = create_data_structure(example_input)
 print get_connections(net, "Debra")
 print get_connections(net, "Mercedes")
 print get_games_liked(net, "John")
-#print add_connection(net, "John", "Freda")
+print get_connections(net, "John")
+print add_connection(net, "John", "Test")
+print get_connections(net, "John")
+
 #print add_new_user(net, "Debra", []) 
 #print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
 #print get_secondary_connections(net, "Mercedes")
