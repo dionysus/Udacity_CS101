@@ -71,6 +71,8 @@ Robin likes to play Call of Arms, Dwarves and Swords.\
 Freda is connected to Olive, John, Debra.\
 Freda likes to play Starfleet Commander, Ninja Hamsters, Seahorse Adventures."
 
+
+
 # ----------------------------------------------------------------------------- 
 # create_data_structure(string_input): 
 #   Parses a block of text (such as the one above) and stores relevant 
@@ -92,8 +94,31 @@ Freda likes to play Starfleet Commander, Ninja Hamsters, Seahorse Adventures."
 # 
 # Return:
 #   The newly created network data structure
+
 def create_data_structure(string_input):
-    return network
+
+	sentences = string_input.split('.')
+	connections = []
+	likes= []
+
+	for i in sentences:
+		if ' is connected to ' in i:
+			connections.append(i.split(' is connected to '))
+		if ' likes to play ' in i:
+			likes.append(i.split(' likes to play '))
+
+	network = {}
+
+	for i in range (0, len(connections)):
+		network[connections[i][0]] = {}
+		network[connections[i][0]]['connections'] = connections[i][1].split(', ')
+
+	for i in range (0, len(likes)):
+		network[connections[i][0]]['likes'] = likes[i][1].split(', ')
+
+	return network
+
+print create_data_structure(example_input)
 
 # ----------------------------------------------------------------------------- # 
 # Note that the first argument to all procedures below is 'network' This is the #
@@ -130,7 +155,7 @@ def get_connections(network, user):
 #   - If the user likes no games, return an empty list.
 #   - If the user is not in network, return None.
 def get_games_liked(network,user):
-    return []
+	return []
 
 # ----------------------------------------------------------------------------- 
 # add_connection(network, user_A, user_B): 
@@ -167,7 +192,7 @@ def add_connection(network, user_A, user_B):
 #   - If the user already exists in network, return network *UNCHANGED* (do not change
 #     the user's game preferences)
 def add_new_user(network, user, games):
-    return network
+	return network
 		
 # ----------------------------------------------------------------------------- 
 # get_secondary_connections(network, user): 
@@ -203,7 +228,7 @@ def get_secondary_connections(network, user):
 #   The number of connections in common (as an integer).
 #   - If user_A or user_B is not in network, return False.
 def count_common_connections(network, user_A, user_B):
-    return 0
+	return 0
 
 # ----------------------------------------------------------------------------- 
 # find_path_to_friend(network, user_A, user_B): 
