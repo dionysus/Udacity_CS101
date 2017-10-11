@@ -306,9 +306,27 @@ def count_common_connections(network, user_A, user_B):
 #   in this procedure to keep track of nodes already visited in your search. You 
 #   may safely add default parameters since all calls used in the grading script 
 #   will only include the arguments network, user_A, and user_B.
-def find_path_to_friend(network, user_A, user_B):
+
+def find_path_to_friend(network, user_A, user_B, checked=[]):
 	# your RECURSIVE solution here!
-	return None
+
+	if user_A not in network or user_B not in network:
+		return False
+
+	path = [user_A]
+
+	if user_B in get_connections(network, user_A):
+		path.append(user_B)
+		print 'found'
+		return path
+
+	else:
+		for friend in get_connections(network, user_A):
+			if friend not in checked and user_B not in path:
+				checked.append(friend)
+				path += find_path_to_friend(network, friend, user_B)
+
+	return path
 
 # Make-Your-Own-Procedure (MYOP)
 # ----------------------------------------------------------------------------- 
@@ -320,24 +338,72 @@ def find_path_to_friend(network, user_A, user_B):
 # Replace this with your own procedure! You can also uncomment the lines below
 # to see how your code behaves. Have fun!
 
+
+def count_common_games(network, user_A, user_B): #same as count_common_connections, but for game likes
+
+	if user_A not in network or user_B not in network:
+		return False
+
+	count = 0
+
+	games_A = get_games_liked(network, user_A)
+	games_B = get_games_liked(network, user_B)
+
+	for games in games_A:
+		if games in games_B:
+			count += 1
+
+	return count
+
+#to suggest new friends to a user, find the user with most shared friends, and the user with the most shared games
+def find_new_friends(network, user): 
+	
+	sharedconnections = 0
+	bestfriend = ''
+	sharedgames = 0
+	bestgamer = ''
+
+	for person in network:
+		if person != user:
+			count = count_common_connections(network, user, person)
+			if count > sharedconnections:
+				sharedconnections = count
+				bestfriend = person
+
+			gamescount = count_common_games(network, user, person)
+			if gamescount > sharedgames:
+				sharedgames = gamescount
+				bestgamer = person
+
+	if sharedconnections > 0:
+		bestfriendtext = str(user) + ' shares ' + str(sharedconnections) + ' friends with ' + str(bestfriend) + '!'
+	if sharedgames > 0:
+		bestgamertext = str(user) + ' plays ' + str(sharedgames) + ' of the same games as ' + str(bestgamer) + '!'
+
+	return str(bestfriendtext) + '\n' + str(bestgamertext)
+
 net = create_data_structure(example_input)
 #print net
-print get_connections(net, "Debra")
-print get_connections(net, "Mercedes")
-print get_games_liked(net, "John")
+#print get_connections(net, "Debra")
+#print get_connections(net, "Mercedes")
+#print get_games_liked(net, "John")
 
-print get_connections(net, "John")
-print add_connection(net, "John", "Test")
-print get_connections(net, "John")
+#print get_connections(net, "John")
+#print add_connection(net, "John", "Test")
+#print get_connections(net, "John")
 
-print add_new_user(net, "Debra", []) 
-print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
+#print add_new_user(net, "Debra", []) 
+#print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
 
-print get_connections(net, "Mercedes")
-print get_secondary_connections(net, "Mercedes")
+#print get_connections(net, "Mercedes")
+#print get_secondary_connections(net, "Mercedes")
 
 
-print get_connections(net, "Mercedes")
-print get_connections(net, "John")
-print count_common_connections(net, "Mercedes", "John")
-#print find_path_to_friend(net, "John", "Ollie")
+#print get_connections(net, "Mercedes")
+#print get_connections(net, "John")
+#print count_common_connections(net, "Mercedes", "John")
+
+#print find_path_to_friend(net, "Robin", "Freda")
+
+print find_new_friends(net, 'John')
+
