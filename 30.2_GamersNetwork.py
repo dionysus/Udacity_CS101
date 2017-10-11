@@ -316,8 +316,13 @@ def count_common_connections(network, user_A, user_B):
 #   may safely add default parameters since all calls used in the grading script 
 #   will only include the arguments network, user_A, and user_B.
 
-def find_path_to_friend(network, user_A, user_B, first=None):
+def find_path_to_friend(network, user_A, user_B, checked=None, first=None):
 	# your RECURSIVE solution here!
+	#print 'checklist: ' + str(checked)
+	if checked == None:
+		checked = []
+
+	checklist = checked
 
 	if first == None:
 		first = user_A
@@ -325,31 +330,43 @@ def find_path_to_friend(network, user_A, user_B, first=None):
 	if user_A not in network or user_B not in network:
 		return None
 
-	newpath = []
+	path = []
 
 	if user_B in get_connections(network, user_A):
-		newpath += [user_B]
+		path += [user_B]
 
 	else:
+		checklist.append(user_A)
 
 		for friend in get_connections(network, user_A):
+			#print friend
 
-			if user_B not in newpath:
+			if friend not in checklist:
+				path.append(friend)
+				next = find_path_to_friend(network, friend, user_B, checklist, first)
 				
-				newpath.append(friend)
+				if next != None:
+					path += next
 
-				if find_path_to_friend(network, friend, user_B) != None:
-					checked.append(friend)
-					newpath + find_path_to_friend(network, friend, user_B, first)
+				print path
 
-	if user_B in newpath:
-		if first in newpath:
-			newpath.remove(first)
-		return [first] + newpath
+
+			if user_B in path:
+				break
+
+
+	if user_B in path:
+		return path
 
 	else:
 		return None
 	
+
+
+network = create_data_structure(example_input)
+print network
+#print get_connections(network, "Mercedes")
+print find_path_to_friend(network,"John","Jennie")
 
 network = create_data_structure(example_input)
 #print find_path_to_friend(network,"John","Bryant")
@@ -452,8 +469,8 @@ def find_new_friends(network, user):
 #print add_new_user(net, "Debra", []) 
 #print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
 
-print get_connections(net, "Mercedes")
-print get_secondary_connections(net, "Mercedes")
+#print get_connections(net, "Mercedes")
+#print get_secondary_connections(net, "Mercedes")
 
 
 #print get_connections(net, "Mercedes")
