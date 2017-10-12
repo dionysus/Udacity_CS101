@@ -316,7 +316,7 @@ def count_common_connections(network, user_A, user_B):
 #   may safely add default parameters since all calls used in the grading script 
 #   will only include the arguments network, user_A, and user_B.
 
-def find_path_to_friend(network, user_A, user_B, checked=None, first=None):
+def find_path_to_friend(network, user_A, user_B, checked=None, depth=0):
 	# your RECURSIVE solution here!
 	#print 'checklist: ' + str(checked)
 	if checked == None:
@@ -324,70 +324,70 @@ def find_path_to_friend(network, user_A, user_B, checked=None, first=None):
 
 	checklist = checked
 
-	if first == None:
-		first = user_A
-
 	if user_A not in network or user_B not in network:
 		return None
 
 	path = []
+
+	if depth == 0:
+		path.append(user_A)
 
 	if user_B in get_connections(network, user_A):
 		path += [user_B]
 
 	else:
 		checklist.append(user_A)
-
 		for friend in get_connections(network, user_A):
-			#print friend
-
 			if friend not in checklist:
 				path.append(friend)
-				next = find_path_to_friend(network, friend, user_B, checklist, first)
+				#print depth
+				next = find_path_to_friend(network, friend, user_B, checklist, depth+1)
 				
 				if next != None:
 					path += next
 
-				print path
-
-
 			if user_B in path:
-				break
-
+				return path
+			else:
+				path = []
 
 	if user_B in path:
 		return path
 
-	else:
-		return None
+	return None
 	
 
 
 network = create_data_structure(example_input)
-print network
+#print network
+#print "John connects to: " + str(get_connections(network, 'John'))
+#print "Bryant connects to: " + str(get_connections(network, 'Bryant'))
+#print "Debra connects to: " + str(get_connections(network, 'Debra'))
+#print "Walter connects to: " + str(get_connections(network, 'Walter'))
+
 #print get_connections(network, "Mercedes")
 print find_path_to_friend(network,"John","Jennie")
 
 network = create_data_structure(example_input)
-#print find_path_to_friend(network,"John","Bryant")
+print find_path_to_friend(network,"John","Bryant")
 
 network = create_data_structure(example_input)
-#print find_path_to_friend(network,"John","Levi")
+print find_path_to_friend(network,"John","Levi")
 
 net = create_data_structure(example_input)
-#print find_path_to_friend(net, "John", "Mercedes")
+print find_path_to_friend(net, "John", "Mercedes")
 
 network = create_data_structure('')
 network = add_new_user(network, 'Alice', [])
 network = add_new_user(network, 'Bob', [])
-#print find_path_to_friend(network, 'Alice', 'Bob')
+print find_path_to_friend(network, 'Alice', 'Bob')
 
 network = create_data_structure('')
 network = add_new_user(network, 'Alice', [])
 network = add_new_user(network, 'Bob', [])
 network = add_new_user(network, 'Carol', [])
 network = add_connection(network, 'Alice', 'Bob')
-#print find_path_to_friend(network, 'Alice', 'Carol')
+print find_path_to_friend(network, 'Alice', 'Carol')
 
 network = create_data_structure('')
 network = add_new_user(network, 'Alice', [])
@@ -398,7 +398,7 @@ network = add_new_user(network, 'Dave', [])
 network = add_connection(network, 'Bob', 'Carol')
 network = add_connection(network, 'Bob', 'Alice')
 network = add_connection(network, 'Carol', 'Dave')
-#print find_path_to_friend(network, 'Alice', 'Dave')
+print find_path_to_friend(network, 'Alice', 'Dave')
 
 
 # Make-Your-Own-Procedure (MYOP)
